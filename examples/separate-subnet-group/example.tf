@@ -69,7 +69,7 @@ output "sg" { value = module.sg }
 # Create a subnet group to verify that the module can use an existing subnet group.
 module "subnet_group" {
   source  = "so1omon563/rds-instance/aws/modules//subnet_group"
-  version = "0.0.1"
+  version = "1.0.0"
 
   name_override = "rds-override-subnet-group"
   subnet_ids    = data.aws_subnets.private_subnets.ids
@@ -80,11 +80,15 @@ module "subnet_group" {
 # Create RDS with default settings in a named Subnet Group.
 module "subnet-group-rds" {
   source  = "so1omon563/rds-instance/aws"
-  version = "0.0.1"
+  version = "1.0.0"
 
   name                   = var.name
+  create_subnet_group    = false
   db_subnet_group_name   = module.subnet_group.subnet_group.name
   vpc_security_group_ids = [module.sg.security-group.id]
+
+  # If you wish to be able to quickly delete the RDS instance, you can uncomment this. Otherwise, you will need to modify the RDS instance prior to deletion.
+  #   deletion_protection = false
 
   tags = { example = "true" }
 }
