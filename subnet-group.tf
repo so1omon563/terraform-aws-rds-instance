@@ -1,5 +1,5 @@
 module "subnet_group" {
-  count  = var.subnet_ids == null ? 0 : 1
+  count  = var.create_subnet_group ? 1 : 0
   source = "./modules/subnet_group"
 
   name       = local.name
