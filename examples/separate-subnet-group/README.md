@@ -79,7 +79,8 @@ output "sg" { value = module.sg }
 
 # Create a subnet group to verify that the module can use an existing subnet group.
 module "subnet_group" {
-  source = "../../../modules//subnet_group"
+  source  = "so1omon563/rds-instance/aws/modules//subnet_group"
+  version = "0.0.1"
 
   name_override = "rds-override-subnet-group"
   subnet_ids    = data.aws_subnets.private_subnets.ids
@@ -117,7 +118,7 @@ No requirements.
 |------|--------|---------|
 | <a name="module_sg"></a> [sg](#module\_sg) | so1omon563/security-group/aws | 1.0.0 |
 | <a name="module_subnet-group-rds"></a> [subnet-group-rds](#module\_subnet-group-rds) | so1omon563/rds-instance/aws | 0.0.1 |
-| <a name="module_subnet_group"></a> [subnet\_group](#module\_subnet\_group) | ../../../modules//subnet_group | n/a |
+| <a name="module_subnet_group"></a> [subnet\_group](#module\_subnet\_group) | so1omon563/rds-instance/aws/modules//subnet_group | 0.0.1 |
 | <a name="module_vpc"></a> [vpc](#module\_vpc) | so1omon563/vpc/aws | 1.0.0 |
 
 ## Resources

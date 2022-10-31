@@ -68,7 +68,8 @@ output "sg" { value = module.sg }
 
 # Create a subnet group to verify that the module can use an existing subnet group.
 module "subnet_group" {
-  source = "../../../modules//subnet_group"
+  source  = "so1omon563/rds-instance/aws/modules//subnet_group"
+  version = "0.0.1"
 
   name_override = "rds-override-subnet-group"
   subnet_ids    = data.aws_subnets.private_subnets.ids
