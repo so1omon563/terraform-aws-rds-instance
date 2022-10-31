@@ -81,11 +81,14 @@ output "sg" { value = module.sg }
 # Create RDS with default settings in Private Subnets, letting the module create a subnet group.
 module "default-rds" {
   source  = "so1omon563/rds-instance/aws"
-  version = "0.0.1"
+  version = "1.0.0"
 
   name                   = var.name
   subnet_ids             = data.aws_subnets.private_subnets.ids
   vpc_security_group_ids = [module.sg.security-group.id]
+
+  # If you wish to be able to quickly delete the RDS instance, you can uncomment this. Otherwise, you will need to modify the RDS instance prior to deletion.
+  #   deletion_protection = false
 
   tags = { example = "true" }
 }
@@ -106,7 +109,7 @@ No requirements.
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_default-rds"></a> [default-rds](#module\_default-rds) | so1omon563/rds-instance/aws | 0.0.1 |
+| <a name="module_default-rds"></a> [default-rds](#module\_default-rds) | so1omon563/rds-instance/aws | 1.0.0 |
 | <a name="module_sg"></a> [sg](#module\_sg) | so1omon563/security-group/aws | 1.0.0 |
 | <a name="module_vpc"></a> [vpc](#module\_vpc) | so1omon563/vpc/aws | 1.0.0 |
 
