@@ -78,7 +78,8 @@ module "subnet_group" {
 
 # Create RDS with default settings in a named Subnet Group.
 module "subnet-group-rds" {
-  source = "../../../"
+  source  = "so1omon563/rds-instance/aws"
+  version = "0.0.1"
 
   name                   = var.name
   db_subnet_group_name   = module.subnet_group.subnet_group.name

@@ -89,7 +89,8 @@ module "subnet_group" {
 
 # Create RDS with default settings in a named Subnet Group.
 module "subnet-group-rds" {
-  source = "../../../"
+  source  = "so1omon563/rds-instance/aws"
+  version = "0.0.1"
 
   name                   = var.name
   db_subnet_group_name   = module.subnet_group.subnet_group.name
@@ -115,7 +116,7 @@ No requirements.
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_sg"></a> [sg](#module\_sg) | so1omon563/security-group/aws | 1.0.0 |
-| <a name="module_subnet-group-rds"></a> [subnet-group-rds](#module\_subnet-group-rds) | ../../../ | n/a |
+| <a name="module_subnet-group-rds"></a> [subnet-group-rds](#module\_subnet-group-rds) | so1omon563/rds-instance/aws | 0.0.1 |
 | <a name="module_subnet_group"></a> [subnet\_group](#module\_subnet\_group) | ../../../modules//subnet_group | n/a |
 | <a name="module_vpc"></a> [vpc](#module\_vpc) | so1omon563/vpc/aws | 1.0.0 |
 
