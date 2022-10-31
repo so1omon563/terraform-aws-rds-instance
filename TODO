@@ -1,8 +1,4 @@
 
-# todo - Add actual tests. Currently can only converge
-
-# todo - Add examples
-
 # todo - Add `restore_to_point_in_time` options
 
 # todo - Add `s3_import` options
@@ -10,3 +6,5 @@
 # todo - Add submodule for options groups?
 
 # todo - Add submodule for paramter groups?
+
+# todo - expand tests

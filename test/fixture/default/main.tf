@@ -23,7 +23,6 @@ output "vpc" { value = module.vpc }
 
 # Get information about Private subnets in VPC
 data "aws_subnets" "private_subnets" {
-  depends_on = [module.vpc]
   filter {
     name   = "vpc-id"
     values = [module.vpc.vpc_id]
@@ -68,11 +67,15 @@ output "sg" { value = module.sg }
 
 # Create RDS with default settings in Private Subnets, letting the module create a subnet group.
 module "default-rds" {
+  depends_on = [
+    module.vpc
+  ]
   source = "../../../"
 
   name                   = var.name
   subnet_ids             = data.aws_subnets.private_subnets.ids
   vpc_security_group_ids = [module.sg.security-group.id]
+  deletion_protection    = false
 
   tags = { example = "true" }
 }
@@ -81,6 +84,9 @@ output "default-rds" { value = module.default-rds }
 # Create another subnet group to verify that the module can use an existing subnet group.
 # Using same subnets as the default RDS instance.
 module "subnet_group" {
+  depends_on = [
+    module.vpc
+  ]
   source = "../../../modules//subnet_group"
 
   name_override = "rds-override-subnet-group"
@@ -91,11 +97,17 @@ module "subnet_group" {
 
 # Create RDS with default settings in a named Subnet Group.
 module "subnet-group-rds" {
+  depends_on = [
+    module.vpc
+  ]
   source = "../../../"
 
   name                   = var.name
+  create_subnet_group    = false
   db_subnet_group_name   = module.subnet_group.subnet_group.name
   vpc_security_group_ids = [module.sg.security-group.id]
+
+  deletion_protection = false
 
   tags = { example = "true" }
 }

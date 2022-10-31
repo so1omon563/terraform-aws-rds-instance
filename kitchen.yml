@@ -1,5 +1,6 @@
 # kitchen-terraform - https://newcontext-oss.github.io/kitchen-terraform/
 ---
+
 # This is a required test kitchen configuration, even though
 # we override its behavior within each platform configuration
 suites:
@@ -7,6 +8,8 @@ suites:
 
 driver:
   name: terraform
+  # Required specifically for RDS, since the creation takes a while
+  command_timeout: 3600
 
 provisioner:
   name: terraform

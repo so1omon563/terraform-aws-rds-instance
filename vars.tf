@@ -63,6 +63,12 @@ variable "copy_tags_to_snapshot" {
   default     = false
 }
 
+variable "create_subnet_group" {
+  type        = bool
+  description = "Whether to create a DB subnet group. If true, a DB subnet group will be created using the subnets specified in `var.subnet_ids`. If false, you must provide a valid DB subnet group name in `var.db_subnet_group_name`."
+  default     = true
+}
+
 variable "customer_owned_ip_enabled" {
   type        = bool
   description = "Indicates whether to enable a customer-owned IP address (CoIP) for an RDS on Outposts DB instance. See [CoIP for RDS on Outposts](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/rds-on-outposts.html#rds-on-outposts.coip) for more information."
@@ -292,7 +298,7 @@ variable "storage_type" {
 
 variable "subnet_ids" {
   type        = list(string)
-  description = "List of VPC Subnet IDs to create a DB subnet group in. Either this, or `var.db_subnet_group_name` must be provided. If using this variable, DB instances will be created in the provided subnets."
+  description = "List of VPC Subnet IDs to create a DB subnet group in. Either this, or `var.db_subnet_group_name` must be provided. Combines with `var.create_subnet_group` to determine what subnets to create the DB subnet group in."
   default     = null
 }
 
