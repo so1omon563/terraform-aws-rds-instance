@@ -1,9 +1,8 @@
-# Basic Usage
+# Create RDS Instance in separate subnet group
 
-Basic quickstart for creating an RDS Instance using the defaults.
+Basic quickstart for creating an RDS Instance in a separately created subnet group.
 
 Example shows using Default Tags in the provider as well as passing additional tags into the resource.
-
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
 
@@ -78,18 +77,29 @@ module "sg" {
 
 output "sg" { value = module.sg }
 
-# Create RDS with default settings in Private Subnets, letting the module create a subnet group.
-module "default-rds" {
+# Create a subnet group to verify that the module can use an existing subnet group.
+module "subnet_group" {
+  source  = "so1omon563/rds-instance/aws/modules//subnet_group"
+  version = "0.0.1"
+
+  name_override = "rds-override-subnet-group"
+  subnet_ids    = data.aws_subnets.private_subnets.ids
+
+  tags = { example = "true" }
+}
+
+# Create RDS with default settings in a named Subnet Group.
+module "subnet-group-rds" {
   source  = "so1omon563/rds-instance/aws"
   version = "0.0.1"
 
   name                   = var.name
-  subnet_ids             = data.aws_subnets.private_subnets.ids
+  db_subnet_group_name   = module.subnet_group.subnet_group.name
   vpc_security_group_ids = [module.sg.security-group.id]
 
   tags = { example = "true" }
 }
-output "default-rds" { value = module.default-rds }
+output "subnet-group-rds" { value = module.subnet-group-rds }
 ```
 
 ## Requirements
@@ -100,14 +110,15 @@ No requirements.
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 4.37.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | n/a |
 
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_default-rds"></a> [default-rds](#module\_default-rds) | so1omon563/rds-instance/aws | 0.0.1 |
 | <a name="module_sg"></a> [sg](#module\_sg) | so1omon563/security-group/aws | 1.0.0 |
+| <a name="module_subnet-group-rds"></a> [subnet-group-rds](#module\_subnet-group-rds) | so1omon563/rds-instance/aws | 0.0.1 |
+| <a name="module_subnet_group"></a> [subnet\_group](#module\_subnet\_group) | so1omon563/rds-instance/aws/modules//subnet_group | 0.0.1 |
 | <a name="module_vpc"></a> [vpc](#module\_vpc) | so1omon563/vpc/aws | 1.0.0 |
 
 ## Resources
@@ -127,8 +138,8 @@ No requirements.
 
 | Name | Description |
 |------|-------------|
-| <a name="output_default-rds"></a> [default-rds](#output\_default-rds) | n/a |
 | <a name="output_sg"></a> [sg](#output\_sg) | n/a |
+| <a name="output_subnet-group-rds"></a> [subnet-group-rds](#output\_subnet-group-rds) | n/a |
 | <a name="output_vpc"></a> [vpc](#output\_vpc) | n/a |
 
 

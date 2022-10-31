@@ -66,15 +66,26 @@ module "sg" {
 
 output "sg" { value = module.sg }
 
-# Create RDS with default settings in Private Subnets, letting the module create a subnet group.
-module "default-rds" {
+# Create a subnet group to verify that the module can use an existing subnet group.
+module "subnet_group" {
+  source  = "so1omon563/rds-instance/aws/modules//subnet_group"
+  version = "0.0.1"
+
+  name_override = "rds-override-subnet-group"
+  subnet_ids    = data.aws_subnets.private_subnets.ids
+
+  tags = { example = "true" }
+}
+
+# Create RDS with default settings in a named Subnet Group.
+module "subnet-group-rds" {
   source  = "so1omon563/rds-instance/aws"
   version = "0.0.1"
 
   name                   = var.name
-  subnet_ids             = data.aws_subnets.private_subnets.ids
+  db_subnet_group_name   = module.subnet_group.subnet_group.name
   vpc_security_group_ids = [module.sg.security-group.id]
 
   tags = { example = "true" }
 }
-output "default-rds" { value = module.default-rds }
+output "subnet-group-rds" { value = module.subnet-group-rds }
